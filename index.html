@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistema demonstrativo de adoção responsável de gatos.">
+  <title>Laços Patas | Adoção de Gatos</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topo">
+    <a class="marca" href="#inicio" aria-label="Laços Patas - início"><span class="marca-icone">🐾</span><span>Laços <b>Patas</b></span></a>
+    <nav aria-label="Navegação principal">
+      <a href="#gatos">Gatinhos</a>
+      <a href="#cadastro-gato">Cadastrar gato</a>
+      <a href="#adotantes">Adotantes</a>
+      <a href="#adocao">Adoção</a>
+    </nav>
+  </header>
 
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-texto">
+        <span class="etiqueta">ADOÇÃO RESPONSÁVEL</span>
+        <h1>Todo gatinho merece<br><em>um lar cheio de amor.</em></h1>
+        <p>Conheça nossos amigos de quatro patas e ajude a escrever um novo começo para eles.</p>
+        <a class="botao botao-claro" href="#gatos">Conhecer os gatinhos</a>
+      </div>
+      <div class="hero-ilustracao" aria-hidden="true">🐈</div>
+    </section>
+
+    <section class="secao" id="gatos">
+      <div class="cabecalho-secao">
+        <div><span class="etiqueta">ENCONTRE SEU AMIGO</span><h2>Gatinhos cadastrados</h2></div>
+        <span class="contador" id="contador-gatos">0 gatinhos</span>
+      </div>
+      <div class="filtros">
+        <label for="filtro-status">Mostrar:</label>
+        <select id="filtro-status">
+          <option value="disponiveis">Disponíveis para adoção</option>
+          <option value="todos">Todos os gatinhos</option>
+          <option value="adotados">Já adotados</option>
+        </select>
+      </div>
+      <div class="grade-gatos" id="lista-gatos" aria-live="polite"></div>
+    </section>
+
+    <section class="secao secao-formularios">
+      <article class="painel" id="cadastro-gato">
+        <span class="etiqueta">NOVO AMIGUINHO</span>
+        <h2>Cadastrar um gato</h2>
+        <form id="form-gato">
+          <label>Nome do gato<input name="nome" required maxlength="40" placeholder="Ex.: Nina"></label>
+          <label>Idade (anos)<input name="idade" type="number" min="0" max="30" required placeholder="Ex.: 2"></label>
+          <label>Cor/tipo de pelagem<input name="pelagem" required maxlength="50" placeholder="Ex.: Branca e cinza"></label>
+          <label class="linha-checkbox"><input name="castrado" type="checkbox"> É castrado?</label>
+          <button class="botao" type="submit">Cadastrar gato</button>
+        </form>
+        <p class="mensagem" id="mensagem-gato" role="status"></p>
+      </article>
+
+      <article class="painel" id="adotantes">
+        <span class="etiqueta">QUEM VAI ADOTAR?</span>
+        <h2>Cadastrar adotante</h2>
+        <form id="form-adotante">
+          <label>Nome completo<input name="nome" required maxlength="80" placeholder="Nome da pessoa"></label>
+          <label>CPF<input name="cpf" required inputmode="numeric" maxlength="14" placeholder="Somente números ou com pontuação"></label>
+          <label>Telefone<input name="telefone" required inputmode="tel" maxlength="20" placeholder="(00) 00000-0000"></label>
+          <button class="botao" type="submit">Cadastrar adotante</button>
+        </form>
+        <p class="mensagem" id="mensagem-adotante" role="status"></p>
+      </article>
+    </section>
+
+    <section class="secao adocao-secao" id="adocao">
+      <span class="etiqueta">UM NOVO COMEÇO</span>
+      <h2>Registrar uma adoção</h2>
+      <p>Escolha um gatinho disponível e informe o CPF do adotante já cadastrado.</p>
+      <form id="form-adocao" class="form-adocao">
+        <label>Gatinho
+          <select name="gatoId" id="seletor-gato" required><option value="">Selecione um gato disponível</option></select>
+        </label>
+        <label>CPF do adotante<input name="cpf" required inputmode="numeric" placeholder="CPF cadastrado"></label>
+        <button class="botao" type="submit">Confirmar adoção</button>
+      </form>
+      <p class="mensagem" id="mensagem-adocao" role="status"></p>
+    </section>
+  </main>
+
+  <footer><span>🐾 Laços Patas</span><p>Adotar é um ato de amor e responsabilidade.</p><small>Projeto demonstrativo de adoção responsável.</small></footer>
+</body>
+</html>
