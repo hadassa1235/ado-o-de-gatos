@@ -1,0 +1,244 @@
+from abc import ABC, abstractmethod
+from typing import List, Optional
+
+
+# ----------------------------------------------------
+# 1. PILAR DA ABSTRAÇÃO (Classe Abstrata Base)
+# ----------------------------------------------------
+class Animal(ABC):
+    """
+    Classe abstrata que define a estrutura base para qualquer animal do sistema.
+    """
+    def __init__(self, id_animal: int, nome: str, idade: int):
+        self._id = id_animal          # Encapsulamento (Atributo protegido)
+        self._nome = nome
+        self._idade = idade
+        self._adotado = False         # Status do animal
+
+    # Getters e Setters (Encapsulamento)
+    @property
+    def id(self) -> int:
+        return self._id
+
+    @property
+    def nome(self) -> str:
+        return self._nome
+
+    @property
+    def idade(self) -> int:
+        return self._idade
+
+    @property
+    def adotado(self) -> bool:
+        return self._adotado
+
+    def marcar_como_adotado(self) -> None:
+        self._adotado = True
+
+    # Método abstrato que força as subclasses a implementarem
+    @abstractmethod
+    def emitir_som(self) -> str:
+        pass
+
+    @abstractmethod
+    def exibir_detalhes(self) -> str:
+        pass
+
+
+# ----------------------------------------------------
+# 2. PILAR DA HERANÇA E POLIMORFISMO
+# ----------------------------------------------------
+class Gato(Animal):
+    """
+    Classe Gato que herda de Animal e implementa comportamentos específicos.
+    """
+    def __init__(self, id_animal: int, nome: str, idade: int, pelagem: str, castrado: bool):
+        super().__init__(id_animal, nome, idade)  # Chama o construtor da classe pai (Herança)
+        self.__pelagem = pelagem                   # Encapsulamento privado (__)
+        self.__castrado = castrado
+
+    @property
+    def pelagem(self) -> str:
+        return self.__pelagem
+
+    @property
+    def castrado(self) -> bool:
+        return self.__castrado
+
+    # Polimorfismo: Implementação específica do método abstrato da classe pai
+    def emitir_som(self) -> str:
+        return "Miau! 😸"
+
+    # Polimorfismo: Sobrescrevendo a forma de exibição das informações
+    def exibir_detalhes(self) -> str:
+        status = "Adotado" if self.adotado else "Disponível"
+        castrado_str = "Sim" if self.__castrado else "Não"
+        return (f"[ID: {self.id}] Gato: {self.nome} | Idade: {self.idade} anos | "
+                f"Pelagem: {self.pelagem} | Castrado: {castrado_str} | Status: {status}")
+
+
+# ----------------------------------------------------
+# 3. CLASSE PARA GESTÃO DOS ADOTANTES
+# ----------------------------------------------------
+class Adotante:
+    """
+    Representa o perfil da pessoa interessada em adotar.
+    """
+    def __init__(self, cpf: str, nome: str, telefone: str):
+        self.__cpf = cpf
+        self.__nome = nome
+        self.__telefone = telefone
+
+    @property
+    def cpf(self) -> str:
+        return self.__cpf
+
+    @property
+    def nome(self) -> str:
+        return self.__nome
+
+    def exibir_info(self) -> str:
+        return f"Adotante: {self.__nome} (CPF: {self.__cpf}) - Tel: {self.__telefone}"
+
+
+# ----------------------------------------------------
+# 4. CLASSE DE GERENCIAMENTO (Serviço de Adoção)
+# ----------------------------------------------------
+class SistemaAdocaoGatos:
+    """
+    Gerencia o cadastro de gatos, adotantes e o processo de adoção.
+    """
+    def __init__(self):
+        self.__gatos: List[Gato] = []
+        self.__adotantes: List[Adotante] = []
+        self.__proximo_id_gato = 1
+
+    def cadastrar_gato(self, nome: str, idade: int, pelagem: str, castrado: bool) -> Gato:
+        gato = Gato(self.__proximo_id_gato, nome, idade, pelagem, castrado)
+        self.__gatos.append(gato)
+        self.__proximo_id_gato += 1
+        return gato
+def cadastrar_adotante(self, cpf: str, nome: str, telefone: str) -> Adotante:
+        adotante = Adotante(cpf, nome, telefone)
+        self.__adotantes.append(adotante)
+        return adotante
+
+    def listar_gatos_disponiveis(self) -> List[Gato]:
+        return [gato for gato in self.__gatos if not gato.adotado]
+
+    def listar_todos_gatos(self) -> List[Gato]:
+        return self.__gatos
+
+    def buscar_gato_por_id(self, id_gato: int) -> Optional[Gato]:
+        for gato in self.__gatos:
+            if gato.id == id_gato:
+                return gato
+        return None
+
+    def realizar_adocao(self, id_gato: int, cpf_adotante: str) -> bool:
+        gato = self.buscar_gato_por_id(id_gato)
+        adotante = next((a for a in self.__adotantes if a.cpf == cpf_adotante), None)
+
+        if not gato:
+            print("❌ Erro: Gato não encontrado.")
+            return False
+
+        if gato.adotado:
+            print(f"❌ Erro: O gato {gato.nome} já foi adotado!")
+            return False
+
+        if not adotante:
+            print("❌ Erro: Adotante não encontrado. Cadastre o adotante primeiro.")
+            return False
+
+        # Conclui a adoção
+        gato.marcar_como_adotado()
+        print(f"\n🎉 Sucesso! O gato {gato.nome} foi adotado por {adotante.nome}!")
+        print(f"Som do gato comemorando: {gato.emitir_som()}")
+        return True
+
+
+# ----------------------------------------------------
+# 5. INTERFACE DE LINHA DE COMANDO (Menu Interativo)
+# ----------------------------------------------------
+def menu():
+    sistema = SistemaAdocaoGatos()
+
+    # Dados pré-cadastrados para teste
+    sistema.cadastrar_gato("Mingau", 2, "Branca", True)
+    sistema.cadastrar_gato("Garfield", 4, "Laranja", False)
+    sistema.cadastrar_gato("Frajola", 1, "Preta e Branca", True)
+
+    while True:
+        print("\n" + "="*40)
+        print("   🐾 SISTEMA DE ADOÇÃO DE GATOS 🐾   ")
+        print("="*40)
+        print("1. Listar Gatos Disponíveis")
+        print("2. Listar Todos os Gatos")
+        print("3. Cadastrar Novo Gato")
+        print("4. Cadastrar Adotante")
+        print("5. Realizar Adoção")
+        print("6. Sair")
+        print("="*40)
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            print("\n--- GATOS DISPONÍVEIS ---")
+            disponiveis = sistema.listar_gatos_disponiveis()
+            if not disponiveis:
+                print("Nenhum gato disponível para adoção no momento.")
+            else:
+                for gato in disponiveis:
+                    print(gato.exibir_detalhes())
+
+        elif opcao == "2":
+            print("\n--- TODOS OS GATOS ---")
+            todos = sistema.listar_todos_gatos()
+            for gato in todos:
+                print(gato.exibir_detalhes())
+
+        elif opcao == "3":
+            print("\n--- CADASTRO DE GATO ---")
+            nome = input("Nome do Gato: ")
+            try:
+                idade = int(input("Idade (anos): "))
+            except ValueError:
+                print("❌ Idade inválida!")
+                continue
+            pelagem = input("Cor/Tipo de Pelagem: ")
+            castrado_input = input("É castrado? (s/n): ").strip().lower()
+            castrado = castrado_input == 's'
+
+            gato = sistema.cadastrar_gato(nome, idade, pelagem, castrado)
+            print(f"✅ Gato '{gato.nome}' cadastrado com sucesso!")
+
+        elif opcao == "4":
+            print("\n--- CADASTRO DE ADOTANTE ---")
+            cpf = input("CPF: ")
+            nome = input("Nome completo: ")
+            telefone = input("Telefone: ")
+            sistema.cadastrar_adotante(cpf, nome, telefone)
+            print(f"✅ Adotante '{nome}' cadastrado com sucesso!")
+
+        elif opcao == "5":
+            print("\n--- REALIZAR ADOÇÃO ---")
+            try:
+                id_gato = int(input("ID do Gato a ser adotado: "))
+            except ValueError:
+                print("❌ ID inválido!")
+                continue
+            cpf_adotante = input("CPF do Adotante: ")
+            sistema.realizar_adocao(id_gato, cpf_adotante)
+
+        elif opcao == "6":
+            print("\nObrigado por utilizar o Sistema de Adoção de Gatos! 👋")
+            break
+
+        else:
+            print("❌ Opção inválida. Tente novamente.")
+
+
+if __name__ == "__main__":
+    menu()
+
