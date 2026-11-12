@@ -153,6 +153,14 @@ function mostrarGatos() {
   gatosFiltrados.forEach(gato => {
     const card = document.createElement("div");
     card.className = "card-gato";
+    const foto = document.createElement("img");
+  
+   foto.src = gato.fotoUrl || "";
+   foto.alt = "Foto de " + (gato.nome || "gatinho");
+   foto.style.width = "100%";
+   foto.style.maxWidth = "250px";
+   foto.style.borderRadius = "12px";
+   foto.style.objectFit = "cover";
 
     const nome = document.createElement("h3");
     nome.textContent = gato.nome || "Sem nome";
@@ -169,7 +177,7 @@ function mostrarGatos() {
     const status = document.createElement("p");
     status.textContent = gato.adotado ? "Adotado ❤️" : "Disponível para adoção 🐾";
 
-    card.append(nome, idade, pelagem, castrado, status);
+    card.append(fotos, nome, idade, pelagem, castrado, status);
     listaGatos.appendChild(card);
   });
 }
