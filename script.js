@@ -177,7 +177,7 @@ function mostrarGatos() {
     const status = document.createElement("p");
     status.textContent = gato.adotado ? "Adotado ❤️" : "Disponível para adoção 🐾";
 
-    card.append(fotos, nome, idade, pelagem, castrado, status);
+    card.append(foto, nome, idade, pelagem, castrado, status);
     listaGatos.appendChild(card);
   });
 }
