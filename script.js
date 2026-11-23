@@ -155,7 +155,13 @@ function mostrarGatos() {
     card.className = "card-gato";
     const foto = document.createElement("img");
   
-   foto.src = gato.fotoUrl || "";
+   const nomeArquivo = (gato.nome || "")
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-z0-9]/g, "");
+
+   foto.src = `https://hadassa1235.github.io/ado-o-de-gatos/${nomeArquivo}.png`;
    foto.alt = "Foto de " + (gato.nome || "gatinho");
    foto.style.width = "100%";
    foto.style.maxWidth = "250px";
